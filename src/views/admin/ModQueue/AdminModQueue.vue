@@ -338,6 +338,7 @@ const onDecision = async (req: Message.ModRequest, t: string, isUndo?: boolean) 
 						component: EmoteDeleteModal,
 						props: {
 							emote: req.target as Emote,
+							id: req.target_id,
 						},
 						events: {
 							delete: (reason: string) => resolve([true, reason]),

@@ -24,9 +24,9 @@ const emit = defineEmits<{
 }>();
 
 defineProps<{
-	error: string;
-	detail: string;
-	code: number;
+	error?: string;
+	detail?: string;
+	code?: number;
 	gql?: GraphQLErrors;
 }>();
 </script>
