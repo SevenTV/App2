@@ -1,6 +1,6 @@
 <template>
 	<main ref="mainEl" class="admin-mod-queue">
-		<div class="mod-queue-category-item q-floating" :disabled="query.loading.value" @click="refetch">
+		<div class="mod-queue-category-item q-floating" :disabled="query.loading.value" @click="query.refetch()">
 			{{ query.loading.value ? "Loading..." : "Refetch" }}
 		</div>
 		<div class="mod-queue-stats">
@@ -18,16 +18,6 @@
 						:maxlength="2"
 						:error="country !== '' && !CISO2.has(country.toUpperCase())"
 					/>
-				</div>
-
-				<div>
-					<label for="limit">Limit: {{ _limit }}</label>
-					<RangeInput v-model.number="_limit" :min="1" :max="250" width="8em" />
-				</div>
-			</section>
-			<section class="mod-queue-categories">
-				<div class="mod-queue-category-item" :disabled="query.loading.value" @click="refetch">
-					{{ query.loading.value ? "Loading..." : "Refetch  " }}
 				</div>
 				<div ref="groupDropdown" class="mod-queue-dropdown mod-queue-category-item">
 					<div class="mod-queue-category-item" :active="dropdownOpen" @click="dropdownOpen = !dropdownOpen">
@@ -53,6 +43,16 @@
 						</div>
 					</div>
 				</div>
+				<div>
+					<label for="limit">Limit: {{ _limit }}</label>
+					<RangeInput v-model.number="_limit" :min="1" :max="250" width="8em" />
+				</div>
+			</section>
+			<section class="mod-queue-categories">
+				<div class="mod-queue-category-item" :disabled="query.loading.value" @click="query.refetch()">
+					{{ query.loading.value ? "Loading..." : "Refetch  " }}
+				</div>
+				<div class="mod-queue-category-item" :active="autoSync" @click="autoSync = !autoSync">AutoSync</div>
 			</section>
 			<section class="mod-queue-categories">
 				<div class="mod-queue-category-item" :active="bigMode" @click="bigMode = !bigMode">Zoomed</div>
@@ -111,12 +111,13 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, toRaw, watch } from "vue";
 import { useQuery } from "@vue/apollo-composable";
-import { debouncedRef, onClickOutside, useElementVisibility } from "@vueuse/core";
+import { debouncedRef, onClickOutside, useElementVisibility, useIntervalFn } from "@vueuse/core";
 import { useActor } from "@/store/actor";
 import { useDataLoaders } from "@/store/dataloader";
 import { useModal } from "@/store/modal";
 import { useMutationStore } from "@/store/mutation";
 import { GetModRequests } from "@/apollo/query/mod-queue.query";
+import { NetworkStatus } from "@apollo/client/core/networkStatus";
 import { ObjectKind } from "@/structures/Common";
 import { Emote } from "@/structures/Emote";
 import { Message } from "@/structures/Message";
@@ -152,22 +153,20 @@ const filter = computed(
 );
 const filterType = ref(false);
 
-const query = useQuery<GetModRequests.Result, GetModRequests.Variables>(
-	GetModRequests,
-	() => ({
-		page: 0,
-		limit: limit.value,
-		wish: activeTab.value,
-		country: CISO2.has(country.value.toUpperCase())
-			? country.value
-			: filter.value.size && !filterType.value
-			? [...filter.value]
-			: undefined,
-	}),
-	{
-		fetchPolicy: "cache-and-network",
-	},
-);
+const vars = computed(() => ({
+	page: 0,
+	limit: limit.value,
+	wish: activeTab.value,
+	country: CISO2.has(country.value.toUpperCase())
+		? country.value
+		: filter.value.size && !filterType.value
+		? [...filter.value]
+		: undefined,
+}));
+
+const query = useQuery<GetModRequests.Result, GetModRequests.Variables>(GetModRequests, vars, {
+	fetchPolicy: "cache-and-network",
+});
 
 const visible = ref(24);
 const end = ref<HTMLElement | null>(null);
@@ -180,7 +179,15 @@ watch(isAtEnd, (v) => {
 	}
 });
 
-const refetch = () => nextTick(query.refetch);
+const autoSync = ref(false);
+const isSyncing = ref(false);
+const autoSyncer = useIntervalFn(async () => {
+	isSyncing.value = true;
+	await query.refetch();
+	isSyncing.value = false;
+}, 10000);
+autoSyncer.pause();
+watch(autoSync, (v) => (v ? autoSyncer.resume() : autoSyncer.pause(), { immediate: true }));
 
 const addMore = async () => {
 	if (!canViewMore.value) return;
@@ -223,11 +230,13 @@ const searchQuery = ref("");
 
 const debouncedSearch = debouncedRef(searchQuery, 500);
 
-const targetMap = new Map<string, Emote>();
+const targetMap = new Map<string, Emote | undefined>();
 
 const loadEmotes = async (ids: string[]) => {
 	const toLoad = ids.filter((id) => !targetMap.has(id));
 	if (!toLoad.length) return;
+	toLoad.forEach((id) => targetMap.set(id, undefined));
+
 	const emotes = await dataloaders.loadEmotes(toLoad);
 
 	emotes.forEach((emote) => {
@@ -241,8 +250,16 @@ const loadEmotes = async (ids: string[]) => {
 	});
 };
 
-query.onResult(({ data }) => {
+const readCards = ref(new Set<string>());
+let block = false;
+query.onResult(({ data, networkStatus }) => {
+	if (networkStatus !== NetworkStatus.ready) return;
 	if (!data) return;
+	if (block) return;
+
+	block = true;
+	nextTick(() => (block = false));
+
 	const d = structuredClone(toRaw(data)) as typeof data;
 	if (!d?.modRequests?.messages) return;
 
@@ -259,11 +276,21 @@ query.onResult(({ data }) => {
 		r.target = emote;
 		r.author = emote.owner!;
 	});
-	visible.value = BASE_VISIBLE;
-	canViewMore.value = rs.length > BASE_VISIBLE;
-	requests.value = rs;
 
-	loadEmotes(rs.slice(0, BASE_VISIBLE).map((r) => r.target_id));
+	if (isSyncing.value) {
+		const new_ids = new Set(rs.map((r) => r.id));
+
+		requests.value.forEach((r) => {
+			if (!new_ids.has(r.id)) {
+				readCards.value.add(r.id);
+			}
+		});
+	} else {
+		requests.value = rs;
+		visible.value = BASE_VISIBLE;
+		canViewMore.value = rs.length > BASE_VISIBLE;
+		loadEmotes(rs.slice(0, BASE_VISIBLE).map((r) => r.target_id));
+	}
 });
 
 watch(debouncedSearch, (s) => {
@@ -291,8 +318,6 @@ const actor = useActor();
 const modal = useModal();
 
 const m = useMutationStore();
-
-const readCards = ref(new Set<string>());
 
 // Called when a decision on a request is made
 const onDecision = async (req: Message.ModRequest, t: string, isUndo?: boolean) => {
