@@ -1,5 +1,6 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { AdminRoute } from "./admin.route";
+import { ExtensionAuthRoute } from "./auth.route";
 import { CallbackRoute } from "./callback.route";
 import { EmoteSetRoute } from "./emote-sets.route";
 import { EmotesRoute } from "./emotes.route";
@@ -19,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
 	HelpRoute,
 	AdminRoute,
 	...CallbackRoute,
+	ExtensionAuthRoute,
 	{
 		path: "/:pathMatch(.*)*",
 		name: "Not Found",
