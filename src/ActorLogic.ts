@@ -6,12 +6,14 @@ import { GetEmoteSet, GetEmoteSetMin } from "@/apollo/query/emote-set.query";
 import { useObjectSubscription } from "@/composables/useObjectSub";
 import { GetCurrentUser } from "./apollo/query/user-self.query";
 import { GetUser } from "./apollo/query/user.query";
+import { useStore } from "./store/main";
 import { ObjectKind } from "./structures/Common";
 import { EmoteSet } from "./structures/EmoteSet";
 import { User } from "./structures/User";
 
 export function setupActor(refreshAuth: Ref<boolean>) {
 	const actor = useActor();
+	const store = useStore();
 	const { user } = storeToRefs(actor);
 	const { watchObject } = useObjectSubscription();
 
@@ -36,6 +38,7 @@ export function setupActor(refreshAuth: Ref<boolean>) {
 			const usr = res.data.user;
 			if (!usr) {
 				actor.setUser(null);
+				store.setAuthToken(null, false);
 				return;
 			}
 

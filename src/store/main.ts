@@ -4,10 +4,9 @@ import { correctLocale } from "@/i18n";
 import { EmoteSet } from "@/structures/EmoteSet";
 import { Role } from "@/structures/Role";
 
-export const SEASONAL_THEME_START = 1669852320734;
-
 export interface State {
 	refreshAuth: boolean;
+	authToken: string | null;
 	theme: Theme;
 	seasonalTheme: boolean;
 	themeTimestamp: number;
@@ -37,6 +36,7 @@ export const useStore = defineStore("main", {
 	state: () =>
 		({
 			refreshAuth: true,
+			authToken: window.localStorage.getItem(LocalStorageKeys.AUTH_TOKEN) || null,
 			theme: (localStorage.getItem(LocalStorageKeys.THEME) || "dark") as Theme,
 			seasonalTheme: false,
 			themeTimestamp: parseInt(localStorage.getItem(LocalStorageKeys.THEME_TIMESTAMP ?? "0") as string),
@@ -60,6 +60,15 @@ export const useStore = defineStore("main", {
 		roleList: (state): Role[] => Object.keys(state.roles).map((k) => state.roles[k]),
 	},
 	actions: {
+		setAuthToken(token: string | null, refresh = true) {
+			this.authToken = token;
+			this.refreshAuth = refresh;
+			if (token) {
+				localStorage.setItem(LocalStorageKeys.AUTH_TOKEN, token);
+			} else {
+				localStorage.removeItem(LocalStorageKeys.AUTH_TOKEN);
+			}
+		},
 		setTheme(newTheme: Theme) {
 			const now = Date.now();
 			this.noTransitions = true;

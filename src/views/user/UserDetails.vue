@@ -68,14 +68,14 @@
 					<Icon lib="fab" icon="discord" />
 				</div>
 
-				<div
+				<!-- <div
 					v-if="!connections.some((c) => c.platform === 'KICK')"
 					class="connect-button with-gradient"
 					platform="KICK"
 					@click="linkAccount('KICK')"
 				>
 					<LogoKick />
-				</div>
+				</div> -->
 			</div>
 
 			<!-- Editors -->
@@ -112,7 +112,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
 import { useActor } from "@store/actor";
 import { useModal } from "@store/modal";
 import { Permissions } from "@/structures/Role";
@@ -120,7 +119,7 @@ import { User } from "@/structures/User";
 import { ConvertIntColorToHex } from "@/structures/util/Color";
 import { useAuth } from "@/composables/useAuth";
 import { useContext } from "@/composables/useContext";
-import LogoKick from "@/components/base/LogoKick.vue";
+// import LogoKick from "@/components/base/LogoKick.vue";
 import Icon from "@/components/utility/Icon.vue";
 import UserTag from "@/components/utility/UserTag.vue";
 import UserEditorModal from "./UserEditorModal.vue";
@@ -132,7 +131,6 @@ const { t } = useI18n();
 
 const actor = useActor();
 const auth = useAuth();
-const router = useRouter();
 
 const ctx = useContext("USER");
 if (!ctx) throw new Error("No user context provided");
@@ -162,15 +160,11 @@ const actorCanManageEditors = computed(
 );
 
 const linkAccount = (platform: User.Connection.Platform) => {
-	if (platform === "YOUTUBE") {
-		window.open(import.meta.env.VITE_APP_OLD + "/link-youtube", "_blank");
-		return;
-	} else if (platform === "KICK") {
-		router.push({ name: "HelpKick" });
+	if (platform === "YOUTUBE" || platform === "KICK") {
 		return;
 	}
 
-	auth.prompt(platform);
+	auth.prompt(platform, true);
 };
 
 const modal = useModal();

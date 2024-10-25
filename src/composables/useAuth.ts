@@ -1,36 +1,51 @@
+import { useStore } from "@/store/main";
 import { User } from "@/structures/User";
-import { log } from "@/Logger";
 
-export function useAuth() {
-	function prompt(provider: User.Connection.Platform, token?: string | null): Promise<void> {
-		const w = window.open(
-			`${import.meta.env.VITE_APP_API_REST}/auth?platform=${provider.toLowerCase()}` +
-				(token ? `&token=${token}` : ""),
-			"seventv-oauth2",
-			"_blank, width=850, height=650, menubar=no, location=no",
-		);
+let authWindow = null as WindowProxy | null;
 
-		return new Promise((resolve) => {
-			const i = setInterval(async () => {
-				if (!w?.closed) {
-					return;
-				}
-
-				clearInterval(i);
-				resolve();
-			}, 100);
-		});
+function popup(route: string): Promise<void> {
+	if (authWindow && !authWindow.closed) {
+		authWindow.close();
 	}
 
-	function logout() {
-		fetch(import.meta.env.VITE_APP_API_REST + "/auth/logout", {
-			method: "POST",
-			credentials: "include",
-		})
-			.then(() => {
-				log.info("Signed out");
-			})
-			.catch((err) => log.error("failed to sign out", err.message));
+	const popup = window.open(
+		`${import.meta.env.VITE_APP_API_REST}/${route}`,
+		"seventv-oauth2",
+		"_blank, width=850, height=650, menubar=no, location=no",
+	);
+
+	authWindow = popup;
+
+	if (!popup) {
+		return Promise.reject("Failed to open window");
+	}
+
+	return new Promise((resolve) => {
+		const i = setInterval(async () => {
+			if (!popup.closed) {
+				return;
+			}
+
+			clearInterval(i);
+			resolve();
+		}, 100);
+	});
+}
+
+export function useAuth() {
+	function prompt(provider: User.Connection.Platform, isLink: boolean): Promise<void> {
+		const store = useStore();
+
+		return popup(
+			`auth?platform=${provider.toLowerCase()}` +
+				(store.authToken ? `&token=${store.authToken}` : "") +
+				(isLink ? "&link_connection=true" : ""),
+		);
+	}
+
+	function logout(): Promise<void> {
+		const store = useStore();
+		return popup("auth/logout" + (store.authToken ? `?token=${store.authToken}` : ""));
 	}
 
 	return {

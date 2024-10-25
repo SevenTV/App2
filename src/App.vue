@@ -79,7 +79,9 @@ import { useWorker } from "@/composables/useWorker";
 import Nav from "@/components/Nav.vue";
 import ModalViewport from "@/components/modal/ModalViewport.vue";
 import ContextMenu from "@/components/overlay/ContextMenu.vue";
+import { log } from "./Logger";
 import Icon from "./components/utility/Icon.vue";
+import { WindowSelfMessage } from "./views/window.messages";
 import { setupActor } from "@/ActorLogic";
 
 const store = useStore();
@@ -100,13 +102,32 @@ const theme = computed(() => {
 const { createWorker } = useWorker();
 createWorker();
 
+setupActor(refreshAuth);
+
 // Set up client user
 provideApolloClient(apolloClient);
 
 // Set up the actor user
-setupActor(refreshAuth);
+window.addEventListener("message", (e) => {
+	if (e.origin === location.origin) {
+		const data = e.data as WindowSelfMessage;
+
+		log.info("Received message from popup", `${JSON.stringify(data)}`);
+
+		if (data.event === "LOGIN_TOKEN") {
+			store.setAuthToken(data.token);
+		} else if (data.event === "LOGIN_FAILED") {
+			store.setAuthToken(null);
+		} else if (data.event === "LOGIN_LINKED") {
+			store.refreshAuth = true;
+		} else if (data.event === "LOGOUT_SUCCESS") {
+			store.setAuthToken(null);
+		}
+	}
+});
 
 const { onResult: onClientRequiredData } = useQuery<AppState>(GetAppState);
+
 onClientRequiredData((res) => {
 	if (!res.data) {
 		return;
