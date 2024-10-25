@@ -210,6 +210,13 @@ const handleFile = async (file: File) => {
 			if (w > 1000 || h > 1000) {
 				uploadError.value = "Image is too large (must be less than 1000x1000)";
 			}
+
+			const aspectRatio = w / h;
+			if (aspectRatio > 3.0) {
+				uploadError.value = "Image aspect ratio is too large (must be less than 3:1)";
+			} else if (aspectRatio < 1 / 32) {
+				uploadError.value = "Image aspect ratio is too small (must be more than 1:32)";
+			}
 		};
 	}
 
