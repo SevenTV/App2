@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useDataLoaders } from "@/store/dataloader";
+import { useStore } from "@/store/main";
 import { useModal } from "@/store/modal";
 import type { User } from "@/structures/User";
 import ModalError from "@/components/modal/ModalError.vue";
@@ -79,8 +80,15 @@ export const useEgVault = defineStore("egvault", {
 	},
 	actions: {
 		async fetchSub(): Promise<SubscriptionResponse> {
+			const store = useStore();
+
 			const resp = await fetch(`${EgVault.api}/v1/subscriptions/@me`, {
 				credentials: "include",
+				headers: store.authToken
+					? {
+							Authorization: `Bearer ${store.authToken}`,
+					  }
+					: {},
 			});
 			const sub: SubscriptionResponse = await resp.json();
 
@@ -94,8 +102,15 @@ export const useEgVault = defineStore("egvault", {
 			return sub;
 		},
 		async fetchProducts(): Promise<Product[]> {
+			const store = useStore();
+
 			const response = await fetch(EgVault.api + "/v1/products", {
 				credentials: "include",
+				headers: store.authToken
+					? {
+							Authorization: `Bearer ${store.authToken}`,
+					  }
+					: {},
 			});
 			const products = await response.json();
 
@@ -104,9 +119,16 @@ export const useEgVault = defineStore("egvault", {
 		},
 
 		async cancelSub(): Promise<Response> {
+			const store = useStore();
+
 			const resp = await fetch(`${EgVault.api}/v1/subscriptions/@me`, {
 				method: "DELETE",
 				credentials: "include",
+				headers: store.authToken
+					? {
+							Authorization: `Bearer ${store.authToken}`,
+					  }
+					: {},
 			});
 			if (!resp.ok) {
 				this.showError(resp);
@@ -117,9 +139,16 @@ export const useEgVault = defineStore("egvault", {
 		},
 
 		async reactivateSub(): Promise<Response> {
+			const store = useStore();
+
 			const resp = await fetch(`${EgVault.api}/v1/subscriptions/@me/reactivate`, {
 				method: "POST",
 				credentials: "include",
+				headers: store.authToken
+					? {
+							Authorization: `Bearer ${store.authToken}`,
+					  }
+					: {},
 			});
 			if (!resp.ok) {
 				this.showError(resp);
@@ -130,9 +159,16 @@ export const useEgVault = defineStore("egvault", {
 		},
 
 		async updatePayment(): Promise<Response> {
+			const store = useStore();
+
 			const resp = await fetch(`${EgVault.api}/v1/subscriptions/@me/payment-method?next=true`, {
 				method: "PATCH",
 				credentials: "include",
+				headers: store.authToken
+					? {
+							Authorization: `Bearer ${store.authToken}`,
+					  }
+					: {},
 			});
 			if (!resp.ok) {
 				this.showError(resp);
@@ -143,13 +179,23 @@ export const useEgVault = defineStore("egvault", {
 		},
 
 		async redeemCode(code: string): Promise<Response> {
+			const store = useStore();
+
 			const resp = await fetch(`${EgVault.api}/v1/redeem`, {
 				method: "POST",
 				body: JSON.stringify({ code }),
 				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: (() => {
+					const headers: HeadersInit = {
+						"Content-Type": "application/json",
+					};
+
+					if (store.authToken) {
+						headers["Authorization"] = `Bearer ${store.authToken}`;
+					}
+
+					return headers;
+				})(),
 			});
 			if (!resp.ok) {
 				this.showError(resp);

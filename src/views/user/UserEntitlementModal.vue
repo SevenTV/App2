@@ -91,6 +91,7 @@ import TextInput from "@/components/form/TextInput.vue";
 import Toggle from "@/components/form/Toggle.vue";
 import ModalBase from "@/components/modal/ModalBase.vue";
 import { BadgeDef, getBadgeByID } from "@/components/utility/BadgeDefs";
+import { useStore } from "../../store/main";
 
 const PaintComponent = defineAsyncComponent(() => import("@/components/utility/Paint.vue"));
 
@@ -116,17 +117,16 @@ const objectRef = ref<string>("");
 
 const assignable = computed<{ badges: BadgeDef[]; paints: Paint[] }>(() => {
 	return {
-		badges:
-			[
-				...new Map(
-					(props.cosmetics.badges ?? [])
-						?.filter((b) => !props.owned.badges.some((b2) => b.tag === b2.id))
-						.map((badge) => getBadgeByID(badge.tag, badge.id, badge))
-						.filter((x) => x?.refID)
-						.filter((x) => !x?.name || x?.name.toLowerCase().includes(filter.value.toLowerCase()))
-						.map((b) => [b!.id, b!]),
-				).values(),
-			] ?? [],
+		badges: [
+			...new Map(
+				(props.cosmetics.badges ?? [])
+					?.filter((b) => !props.owned.badges.some((b2) => b.tag === b2.id))
+					.map((badge) => getBadgeByID(badge.tag, badge.id, badge))
+					.filter((x) => x?.refID)
+					.filter((x) => !x?.name || x?.name.toLowerCase().includes(filter.value.toLowerCase()))
+					.map((b) => [b!.id, b!]),
+			).values(),
+		],
 
 		paints:
 			props.cosmetics.paints
@@ -156,12 +156,22 @@ const assignEntitlement = () => {
 		condition: subOnly.value ? { all_roles: ["6076a86b09a4c63a38ebe801"] } : undefined,
 	};
 
+	const store = useStore();
+
 	fetch(import.meta.env.VITE_APP_API_REST + "/entitlements", {
 		method: "POST",
 		credentials: "include",
-		headers: {
-			"Content-Type": "application/json",
-		},
+		headers: (() => {
+			const headers: HeadersInit = {
+				"Content-Type": "application/json",
+			};
+
+			if (store.authToken) {
+				headers["Authorization"] = `Bearer ${store.authToken}`;
+			}
+
+			return headers;
+		})(),
 		body: JSON.stringify(body),
 	}).then(onClose);
 };

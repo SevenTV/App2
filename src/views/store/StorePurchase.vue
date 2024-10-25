@@ -129,6 +129,8 @@ const checkout = async () => {
 	const fd = JSON.parse(formData.value);
 
 	const giftQuery = gift && recipient.value ? `&gift_for=${recipient.value.id}` : "";
+	const store = useStore();
+
 	const resp = await fetch(
 		`${EgVault.api}/v1/subscriptions?renew_interval=${renewInterval}&payment_method=${selectedMethod.value}&next=true${giftQuery}`,
 		{
@@ -141,9 +143,17 @@ const checkout = async () => {
 				},
 			}),
 			credentials: "include",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: (() => {
+				const headers: HeadersInit = {
+					"Content-Type": "application/json",
+				};
+
+				if (store.authToken) {
+					headers["Authorization"] = `Bearer ${store.authToken}`;
+				}
+
+				return headers;
+			})(),
 		},
 	);
 	if (!resp || !resp.ok) {
