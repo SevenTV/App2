@@ -5,4 +5,5 @@ export enum LocalStorageKeys {
 	LOCALE = "7tv-locale",
 	IDENTITY = "7tv-identity",
 	DEFAULT_SET = "7tv-default-set",
+	AUTH_TOKEN = "7tv-auth-token",
 }
