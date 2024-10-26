@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -17,7 +17,6 @@ import (
 
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasttemplate"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const MetaTags = `
@@ -28,6 +27,32 @@ const MetaTags = `
 		<link type="application/json+oembed" href="%s">
 `
 
+const GQLQuery = `
+query GetEmote($id: ObjectID!) {
+    emote(id: $id) {
+		id
+        name
+		animated
+		created_at
+		host {
+			url
+			files {
+				frame_count
+				width
+				height
+				format
+			}
+		}
+        owner {
+			id
+            display_name
+        }
+        channels {
+            total
+        }
+    }
+}`
+
 type EmoteFile struct {
 	FrameCount int    `json:"frame_count"`
 	Format     string `json:"format"`
@@ -37,11 +62,15 @@ type EmoteFile struct {
 
 type GQLEmoteResponse struct {
 	Data struct {
-		Emote struct {
+		Emote *struct {
+			ID        string    `json:"id"`
 			Name      string    `json:"name"`
 			Animated  bool      `json:"animated"`
 			CreatedAt time.Time `json:"created_at"`
-			Host      ImageHost `json:"host"`
+			Host       struct {
+				URL   string      `json:"url"`
+				Files []EmoteFile `json:"files"`
+			} `json:"host"`
 			Owner     struct {
 				ID          string `json:"id"`
 				DisplayName string `json:"display_name"`
@@ -51,11 +80,6 @@ type GQLEmoteResponse struct {
 			} `json:"channels"`
 		} `json:"emote"`
 	} `json:"data"`
-}
-
-type ImageHost struct {
-	URL   string      `json:"url"`
-	Files []EmoteFile `json:"files"`
 }
 
 type OEmbedData struct {
@@ -110,43 +134,27 @@ func main() {
 			} else {
 				if strings.HasPrefix(pth, "/emotes/") {
 					id := strings.TrimSpace(strings.Split(strings.TrimPrefix(pth, "/emotes/"), "?")[0])
-					emoteID, err := primitive.ObjectIDFromHex(id)
+
+					// handle emote route
+					body, err := json.Marshal(map[string]any{
+						"query": GQLQuery,
+						"variables": map[string]string{
+							"id": id,
+						},
+					})
+
 					if err != nil {
+						log.Println("Failed to marshal request: ", err)
 						goto end
 					}
 
-					// handle emote route
-					query := url.Values{}
-					query.Set("query", fmt.Sprintf(`
-{
-    emote(id: "%s") {
-        name
-		animated
-		created_at
-		host {
-			url
-			files {
-				frame_count
-				width
-				height
-				format
-			}
-		}
-        owner {
-			id
-            display_name
-        }
-        channels {
-            total
-        }
-    }
-}`, emoteID.Hex()))
-
-					req, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%s?%s", gqlApiURL, query.Encode()), nil)
+					req, err := http.NewRequestWithContext(ctx, "POST", fmt.Sprintf("%s", gqlApiURL), bytes.NewReader(body))
 					if err != nil {
 						log.Println("Failed to make request: ", err)
 						goto end
 					}
+
+					req.Header.Set("Cf-Connecting-Ip", string(ctx.Request.Header.Peek("Cf-Connecting-Ip")))
 
 					resp, err := http.DefaultClient.Do(req)
 					if err != nil {
@@ -161,6 +169,11 @@ func main() {
 						goto end
 					}
 
+					if resp.StatusCode != 200 {
+						log.Println("Failed to get emote: ", string(data))
+						goto end
+					}
+
 					gqlResp := GQLEmoteResponse{}
 					if err := json.Unmarshal(data, &gqlResp); err != nil {
 						log.Println("Failed to parse response: ", err)
@@ -168,8 +181,7 @@ func main() {
 					}
 
 					emote := gqlResp.Data.Emote
-					if len(emote.Host.Files) == 0 {
-						log.Println("No files")
+					if emote == nil || len(emote.Host.Files) == 0 {
 						goto end
 					}
 
@@ -185,7 +197,7 @@ func main() {
 
 					oembed, _ := json.Marshal(OEmbedData{
 						AuthorName:   fmt.Sprintf("%s by %s (%d Channels)", emote.Name, emote.Owner.DisplayName, emote.Channels.Total),
-						AuthorURL:    fmt.Sprintf("%s/emotes/%s", websiteURL, emoteID.Hex()),
+						AuthorURL:    fmt.Sprintf("%s/emotes/%s", websiteURL, emote.ID),
 						ProviderName: "7TV.APP - It's like a third party thing",
 						ProviderURL:  websiteURL,
 						Type:         "image",

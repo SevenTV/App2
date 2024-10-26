@@ -114,6 +114,7 @@ import Icon from "@/components/utility/Icon.vue";
 import UserEntitlementModal from "./UserEntitlementModal.vue";
 import UserCosmeticsUpdateModal from "./UserSettingsCosmeticsUpdateModal.vue";
 import UserProfileSettings from "./UserSettingsProfile.vue";
+import { useStore } from "../../store/main";
 import AnnotatedBadge from "../store/AnnotatedBadge.vue";
 
 export interface FormType {
@@ -198,6 +199,8 @@ onCosmetics(async (res) => {
 
 const uploading = ref(false);
 
+const store = useStore();
+
 const m = useMutationStore();
 const submit = async () => {
 	if (!actor.user || uploading.value) {
@@ -213,6 +216,10 @@ const submit = async () => {
 		const req = new XMLHttpRequest();
 		req.open("PUT", `${import.meta.env.VITE_APP_API_REST as string}/users/${tgt}/profile-picture`, true);
 		req.setRequestHeader("Content-Length", form.profile_picture.byteLength.toString(10));
+		if (store.authToken) {
+			req.setRequestHeader("Authorization", `Bearer ${store.authToken}`);
+		}
+
 		req.withCredentials = true;
 		// req.upload.onprogress = (progress) => {}; // TODO: show upload progress
 

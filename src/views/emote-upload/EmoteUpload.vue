@@ -127,6 +127,7 @@ import { Permissions } from "@/structures/Role";
 import Checkbox from "@/components/form/Checkbox.vue";
 import TextInput from "@/components/form/TextInput.vue";
 import Icon from "@/components/utility/Icon.vue";
+import { useStore } from "../../store/main";
 
 const EmoteTagList = defineAsyncComponent(() => import("@/views/emote-upload/EmoteTagList.vue"));
 
@@ -234,6 +235,8 @@ const handleFile = async (file: File) => {
 // Upload (network request)
 const uploadProgress = ref(0);
 const uploadError = ref("");
+const store = useStore();
+
 const upload = () => {
 	uploadError.value = "";
 	const data = {
@@ -252,6 +255,9 @@ const upload = () => {
 	req.setRequestHeader("X-Emote-Data", JSON.stringify(data));
 	req.setRequestHeader("Content-Type", mime);
 	req.setRequestHeader("Content-Length", buf.value.byteLength.toString(10));
+	if (store.authToken) {
+		req.setRequestHeader("Authorization", `Bearer ${store.authToken}`);
+	}
 	req.withCredentials = true;
 	req.upload.onprogress = (progress) => (uploadProgress.value = (progress.loaded / progress.total) * 100);
 	req.onload = () => {
