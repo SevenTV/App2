@@ -1,6 +1,6 @@
 <template>
 	<button
-		v-if="actor.user === null"
+		v-if="actor.user === null || redirect"
 		class="twitch-button"
 		:platform="platform"
 		@click="() => oauth2Authorize()"
@@ -32,11 +32,17 @@ const actor = useActor();
 const { t } = useI18n();
 const auth = useAuth();
 
+const props = defineProps<{ redirect?: boolean }>();
+
 const platform = ref<User.UserConnectionPlatform>("TWITCH");
 
 /** Request the user to authorize with a third party platform  */
 const oauth2Authorize = () => {
-	auth.prompt(platform.value, false);
+	if (props.redirect) {
+		auth.redirect(platform.value, false);
+	} else {
+		auth.prompt(platform.value, false);
+	}
 };
 
 const { open } = useContextMenu();

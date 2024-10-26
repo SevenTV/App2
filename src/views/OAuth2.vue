@@ -5,7 +5,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@vueuse/head";
-import { publishSelfMessage } from "./window.messages";
+import { publishMessage } from "./window.messages";
+import { useStore } from "../store/main";
 
 useHead({
 	title: "7TV | Authentication (OAuth2 Callback)",
@@ -16,42 +17,59 @@ useHead({
 
 const route = useRoute();
 const router = useRouter();
+const opener = window.opener as Window;
 
 function handleRoute() {
-	if (!window.opener) {
+	if (!opener) {
 		router.replace("/");
 		return;
 	}
 
-	// Parse the token as a URLSearchParams
 	const params = new URLSearchParams(route.hash.slice(1));
 	const token = params.get("token");
-	const wasLinked = params.get("linked") === "true";
-	const isLogout = params.get("logout") === "true";
 
-	if (isLogout) {
-		publishSelfMessage({ event: "LOGOUT_SUCCESS" });
-		window.close();
-		return;
+	let is7TV;
+	try {
+		is7TV = opener.location.origin === window.origin;
+	} catch (e) {
+		is7TV = false;
 	}
 
-	if (wasLinked) {
-		publishSelfMessage({ event: "LOGIN_LINKED" });
-		window.close();
-		return;
+	if (is7TV) {
+		const wasLinked = params.get("linked") === "true";
+		const isLogout = params.get("logout") === "true";
+
+		// Parse the token as a URLSearchParams
+
+		if (isLogout) {
+			publishMessage({ event: "LOGOUT_SUCCESS" });
+			window.close();
+			return;
+		}
+
+		if (wasLinked) {
+			publishMessage({ event: "LOGIN_LINKED" });
+			window.close();
+			return;
+		}
+
+		if (!token) {
+			publishMessage({ event: "LOGIN_FAILED" });
+			window.close();
+			return;
+		}
+
+		// Send the token back to the parent window
+		publishMessage({
+			event: "LOGIN_TOKEN",
+			token,
+		});
+	} else if (token && window.sessionStorage.getItem("7tv-extension-auth") === "true") {
+		const store = useStore();
+		store.setAuthToken(token);
+		opener.postMessage({ type: "7tv-token", token }, "https://www.twitch.tv");
 	}
 
-	if (!token) {
-		publishSelfMessage({ event: "LOGIN_FAILED" });
-		window.close();
-		return;
-	}
-
-	// Send the token back to the parent window
-	publishSelfMessage({
-		event: "LOGIN_TOKEN",
-		token,
-	});
 	window.close();
 }
 

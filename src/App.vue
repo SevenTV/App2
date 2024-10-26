@@ -81,7 +81,7 @@ import ModalViewport from "@/components/modal/ModalViewport.vue";
 import ContextMenu from "@/components/overlay/ContextMenu.vue";
 import { log } from "./Logger";
 import Icon from "./components/utility/Icon.vue";
-import { WindowSelfMessage } from "./views/window.messages";
+import { WindowMessage } from "./views/window.messages";
 import { setupActor } from "@/ActorLogic";
 
 const store = useStore();
@@ -110,7 +110,7 @@ provideApolloClient(apolloClient);
 // Set up the actor user
 window.addEventListener("message", (e) => {
 	if (e.origin === location.origin) {
-		const data = e.data as WindowSelfMessage;
+		const data = e.data as WindowMessage;
 
 		log.info("Received message from popup", `${JSON.stringify(data)}`);
 

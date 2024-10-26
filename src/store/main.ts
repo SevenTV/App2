@@ -113,5 +113,13 @@ export const useStore = defineStore("main", {
 	},
 });
 
+setInterval(() => {
+	const token = localStorage.getItem(LocalStorageKeys.AUTH_TOKEN);
+	const store = useStore();
+	if (token !== store.authToken) {
+		store.setAuthToken(token);
+	}
+}, 1000);
+
 export type Theme = "light" | "dark";
 export type NotFoundMode = "troll-despair" | "pot-friend";

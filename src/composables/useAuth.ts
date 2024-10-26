@@ -43,6 +43,17 @@ export function useAuth() {
 		);
 	}
 
+	function redirect(provider: User.Connection.Platform, isLink: boolean) {
+		const store = useStore();
+
+		const route =
+			`auth?platform=${provider.toLowerCase()}` +
+			(store.authToken ? `&token=${store.authToken}` : "") +
+			(isLink ? "&link_connection=true" : "");
+
+		window.location.assign(`${import.meta.env.VITE_APP_API_REST}/${route}`);
+	}
+
 	function logout(): Promise<void> {
 		const store = useStore();
 		return popup("auth/logout" + (store.authToken ? `?token=${store.authToken}` : ""));
@@ -50,6 +61,7 @@ export function useAuth() {
 
 	return {
 		prompt,
+		redirect,
 		logout,
 	};
 }

@@ -1,31 +1,30 @@
 <template>
 	<div class="extension-auth-content">
-		<LoginButton v-if="!actor.user" />
+		<LoginButton redirect />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
-import { useActor } from "@/store/actor";
-import { useStore } from "@/store/main";
-import LoginButton from "@/components/utility/LoginButton.vue";
+import { useRouter } from "vue-router";
+import LoginButton from "../components/utility/LoginButton.vue";
+import { useStore } from "../store/main";
 
+const router = useRouter();
 const store = useStore();
-const actor = useActor();
-window.addEventListener("message", function listener(e) {
-	if (e.origin !== "https://www.twitch.tv") return;
-	if (e.data !== "7tv-token-request") return;
+const opener = window.opener as Window;
 
-	window.removeEventListener("message", listener);
-	watch(
-		() => store.authToken,
-		(t) => {
-			if (!t) return;
-			e.source?.postMessage({ type: "7tv-token", token: t }, { targetOrigin: "https://www.twitch.tv/*" });
-		},
-		{ immediate: true },
-	);
-});
+function main() {
+	if (!opener) {
+		router.push("/");
+	} else if (store.authToken) {
+		opener.postMessage({ type: "7tv-token", token: store.authToken }, "https://www.twitch.tv");
+		window.close();
+	} else {
+		window.sessionStorage.setItem("7tv-extension-auth", "true");
+	}
+}
+
+main();
 </script>
 
 <style lang="scss">
