@@ -1,18 +1,23 @@
 <template>
 	<ModalBase width="32em" height="16em" footer-height="3em" @close="emit('close')">
 		<template #heading>
-			<h2>{{ t("emote.delete_prompt.heading", [emote.name]) }}</h2>
+			<h2>{{ t("emote.delete_prompt.heading", [emote?.name ?? "*DELETED?"]) }}</h2>
 		</template>
 
 		<template #content>
 			<div class="delete-explain">
-				<span> {{ t("emote.delete_prompt.notice", [emote.name]) }} </span>
+				<span> {{ t("emote.delete_prompt.notice", [emote?.name ?? "*DELETED"]) }} </span>
 				<TextInput
 					v-model="reason"
 					:autofocus="true"
 					autocomplete="off"
 					:label="t('emote.delete_prompt.reason')"
 				/>
+				<span v-if="!emote">
+					This emote might be deleted already, manually check the
+					<a v-if="id" :href="`/emotes/${id}`" target="_blank"> emote page </a>
+					to confirm
+				</span>
 			</div>
 		</template>
 
@@ -47,7 +52,8 @@ const emit = defineEmits<{
 }>();
 
 defineProps<{
-	emote: Emote;
+	emote?: Emote;
+	id?: string;
 }>();
 
 const { t } = useI18n();
