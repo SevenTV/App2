@@ -11,7 +11,6 @@ export function handleMessage<N extends WorkerMessageName>(evt: WorkerMessage<N>
 	switch (evt.name) {
 		case "EventCommandSubscribe": {
 			const d = evt.data as WorkerMessageData<"EventCommandSubscribe">;
-
 			eventAPI.subscribe(d.type, d.condition);
 			break;
 		}

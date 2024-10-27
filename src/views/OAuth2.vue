@@ -28,7 +28,7 @@ function handleRoute() {
 	const params = new URLSearchParams(route.hash.slice(1));
 	const token = params.get("token");
 
-	let is7TV;
+	let is7TV: boolean;
 	try {
 		is7TV = opener.location.origin === window.origin;
 	} catch (e) {

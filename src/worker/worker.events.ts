@@ -28,10 +28,16 @@ export class EventAPI {
 	connect(transport: EventAPITransport): void {
 		if (this.eventSource || this.socket || !this.url) return;
 
+		const url = new URL(this.url);
+
+		// Add query param giving the version of the website / src
+		url.searchParams.append("app", "7tv-website-old");
+		url.searchParams.append("version", import.meta.env.VITE_APP_VERSION);
+
 		this.transport = transport;
 
 		if (this.transport === "WebSocket") {
-			this.socket = new WebSocket(this.url);
+			this.socket = new WebSocket(url);
 			this.socket.onopen = () => this.onOpen();
 			this.socket.onclose = () => this.onClose();
 			this.socket.onmessage = (ev) => {
@@ -44,7 +50,7 @@ export class EventAPI {
 			};
 		}
 
-		log.debug("<EventAPI>", "Connecting...", `url=${this.url}`);
+		log.debug("<EventAPI>", "Connecting...", `url=${url}`);
 	}
 
 	getSocket(): WebSocket | null {

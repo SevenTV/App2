@@ -1,3 +1,4 @@
+import { version } from "./package.json";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import { visualizer } from "rollup-plugin-visualizer";
@@ -5,7 +6,11 @@ import { defineConfig, loadEnv } from "vite";
 
 // https://vitejs.dev/config/
 export default ({ mode }) => {
-	process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+	process.env = {
+		...process.env,
+		...loadEnv(mode, process.cwd()),
+		VITE_APP_VERSION: version,
+	};
 
 	return defineConfig({
 		build: {
