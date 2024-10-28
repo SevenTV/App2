@@ -115,6 +115,7 @@ import UserEntitlementModal from "./UserEntitlementModal.vue";
 import UserCosmeticsUpdateModal from "./UserSettingsCosmeticsUpdateModal.vue";
 import UserProfileSettings from "./UserSettingsProfile.vue";
 import { useStore } from "../../store/main";
+import ModalError from "../../components/modal/ModalError.vue";
 import AnnotatedBadge from "../store/AnnotatedBadge.vue";
 
 export interface FormType {
@@ -192,6 +193,18 @@ onCosmetics(async (res) => {
 		.map((badge) => getBadgeByID(badge.tag, badge.id, badge))
 		.filter((x) => x) as BadgeDef[];
 	cosmetics.paints = data?.paints ?? [];
+
+	if (cosmetics.badges.length === 0) {
+		useModal().open("ErrorModal", {
+			component: ModalError,
+			events: {},
+			props: {
+				error: "No Cosmetics",
+				detail: "Subscriber-only cosmetics, such as paints and badges, are only visible while you have an active subscription. These items aren't lost if your subscription expires — they'll simply become visible again when you resubscribe.",
+				code: 0,
+			},
+		});
+	}
 
 	form.selected_badge = res.data.user.cosmetics.filter((x) => x.kind === "BADGE").find((x) => x.selected)?.id ?? "";
 	form.selected_paint = res.data.user.cosmetics.filter((x) => x.kind === "PAINT").find((x) => x.selected)?.id ?? "";
