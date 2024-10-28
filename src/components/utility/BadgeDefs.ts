@@ -1,4 +1,5 @@
 import { Component } from "vue";
+import { useActor } from "@/store/actor";
 import { Badge } from "@/structures/Cosmetic";
 import BgBadge1VueSvg from "@/components/base/BgBadge1.vue";
 import BgBadge2VueSvg from "@/components/base/BgBadge2.vue";
@@ -10,6 +11,10 @@ import BgBadgeXmasGifterVueSvg from "@/components/base/BgBadgeXmasGifter.vue";
 function monthToDays(months: number): number {
 	return Math.floor((months - 1) * (365.25 / 12));
 }
+
+const actor = useActor();
+
+const ext = actor.avifSupported ? "avif" : "webp";
 
 export const badgeDefs = [
 	{
@@ -146,56 +151,56 @@ export const badgeDefs = [
 		name: "2 Years",
 		sub: true,
 		days: monthToDays(24),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/64dfeec02040c6754787d929/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/64dfeec02040c6754787d929/4x.${ext}`,
 	},
 	{
 		id: "sub27",
 		name: "2.25 Years",
 		sub: true,
 		days: monthToDays(27),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff4652040c6754787d92a/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff4652040c6754787d92a/4x.${ext}`,
 	},
 	{
 		id: "sub30",
 		name: "2.5 Years",
 		sub: true,
 		days: monthToDays(30),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff95e2040c6754787d92f/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff95e2040c6754787d92f/4x.${ext}`,
 	},
 	{
 		id: "sub33",
 		name: "2.75 Years",
 		sub: true,
 		days: monthToDays(33),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff9c32040c6754787d930/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/64dff9c32040c6754787d930/4x.${ext}`,
 	},
 	{
 		id: "sub36",
 		name: "3 Years",
 		sub: true,
 		days: monthToDays(36),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9B20KQK8DK8FT13XV83YC/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9B20KQK8DK8FT13XV83YC/4x.${ext}`,
 	},
 	{
 		id: "sub39",
 		name: "3.25 Years",
 		sub: true,
 		days: monthToDays(39),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BASQDPE5VV0PMXRYND9E/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BASQDPE5VV0PMXRYND9E/4x.${ext}`,
 	},
 	{
 		id: "sub39",
 		name: "3.5 Years",
 		sub: true,
 		days: monthToDays(42),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BH1BBRB8Q45AJVVND54R/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BH1BBRB8Q45AJVVND54R/4x.${ext}`,
 	},
 	{
 		id: "sub45",
 		name: "3.75 Years",
 		sub: true,
 		days: monthToDays(45),
-		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BPCRSDK1BQSM17278GJN/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/01JAT9BPCRSDK1BQSM17278GJN/4x.${ext}`,
 	},
 	{
 		id: "subfounder",
@@ -228,13 +233,13 @@ export const badgeDefs = [
 		id: "xsubtember23",
 		name: "Sub Event 2023",
 		sub: false,
-		img: `${import.meta.env.VITE_APP_CDN}/badge/6508d5bd55deb74f50368f40/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/6508d5bd55deb74f50368f40/4x.${ext}`,
 	},
 	{
 		id: "nnys2023",
 		name: "7TV x NNYS 2023",
 		sub: false,
-		img: `${import.meta.env.VITE_APP_CDN}/badge/65786330ffc9d968e5102164/3x`,
+		img: `${import.meta.env.VITE_APP_CDN}/badge/65786330ffc9d968e5102164/4x.${ext}`,
 	},
 	{
 		id: "contributor",
@@ -325,7 +330,7 @@ export const getBadgeByID = (id: string, refID?: string, badge?: Badge) => {
 			background: {},
 			logo: {},
 			border: {},
-			img: `${import.meta.env.VITE_APP_CDN}/badge/${badge.id}/3x`,
+			img: `${import.meta.env.VITE_APP_CDN}/badge/${badge.id}/4x.${ext}`,
 		} as BadgeDef;
 	}
 
