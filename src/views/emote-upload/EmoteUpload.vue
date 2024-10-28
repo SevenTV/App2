@@ -75,7 +75,7 @@
 
 						<div class="requirements">
 							<strong>Limits</strong>
-							<p>File size: 7MB</p>
+							<p>File size: 7MiB</p>
 							<p>Image dimensions: 1000x1000</p>
 							<p>Image frames: 1000</p>
 						</div>
@@ -221,8 +221,8 @@ const handleFile = async (file: File) => {
 		};
 	}
 
-	if (file.size >= 7e6) {
-		uploadError.value = "File is larger than 7MB";
+	if (file.size >= 7 * 1024 * 1024) {
+		uploadError.value = "File is larger than 7MiB";
 	}
 
 	mime = file.type;
