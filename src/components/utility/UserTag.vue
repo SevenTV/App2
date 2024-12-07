@@ -18,7 +18,7 @@
 		</span>
 
 		<template v-if="user && paint">
-			<Paint v-tooltip="'Paint: ' + paint.name" :paint="paint" :text="true">
+			<Paint v-tooltip="'Paint: ' + paint.name" v-tooltip:position="'bottom'" :paint="paint" :text="true">
 				<span class="username" :style="{ color: ConvertDecimalToHex(user.style.color, false) }">
 					{{ user.display_name ?? user.username }}
 				</span>
