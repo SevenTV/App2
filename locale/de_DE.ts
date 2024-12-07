@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "Hunderte Emote-Slots",
-				detail: "Beginne bei {0} Slots, mit einem möglichen Maximum von {1} Emote Slots und das ohne Paywall.",
+				detail: "Jeder erhält 600 anpassbare Kanal-Emote-Slots, komplett kostenlos.",
 			},
 			channel_emote_names: {
 				name: "Kanalspezifische Emote-Namen",
@@ -125,8 +125,8 @@ export default {
 		emote_version_deleted: "hat Version '{VER}' für {T} gelöscht",
 		emote_flag_added: "hat Kennzeichnung {FLAG} zu {T} hinzugefügt",
 		emote_flag_removed: "hat Kennzeichen {FLAG} von {T} entfernt",
-		emote_personal_use_validated: "Validated personal use for {T}",
-		emote_personal_use_rejected: "Rejected personal use for {T}",
+		emote_personal_use_validated: "hat persönliche Nutzung von {T} validiert",
+		emote_personal_use_rejected: "hat persönliche Nutzung von {T} abgelehnt",
 		user_created: "hat {T} erstellt",
 		user_deleted: "hat {T} gelöscht",
 		user_editor_added: "hat {U} als Editor hinzugefügt",
@@ -175,9 +175,9 @@ export default {
 		no_longer_available: "Dieses Emote ist nicht länger verfügbar",
 		tags: "Tags",
 		add_tag: "Tag hinzufügen",
-		trending_rank: "#{0} on Trending",
-		card_label_added: "Added to {0}",
-		card_label_added_foreign: "Added to {0}, originating from another set",
+		trending_rank: "#{0} im Trend",
+		card_label_added: "Zu {0} hinzugefügt",
+		card_label_added_foreign: "Zu {0} hinzugefügt, aus einer anderen Emote-Gruppe stammend",
 		avif_no_support:
 			"Entschuldigung, das AVIF-Format wird von {BROWSER} leider nicht unterstützt. Versuche, auf eine neuere Version zu aktualisieren oder einen anderen Browser zu verwenden.",
 		delete_prompt: {
@@ -185,7 +185,7 @@ export default {
 			heading_versions: "Lösche Version '{0}' von {1}",
 			notice: "Möchtest du das Emote {0} wirklich löschen{'?'}",
 			notice_versions: "Möchtest du die Version '{0}' von Emote {1} wirklich löschen{'?'}",
-			reason: "Reason for deletion",
+			reason: "Entfernungsgrund",
 		},
 		properties_prompt: {
 			heading: "{0} bearbeiten",
@@ -193,12 +193,13 @@ export default {
 		unlisted: {
 			heading: "Achtung!",
 			warning: "Dieses Emote ist nicht öffentlich gelistet.",
-			warning_flagged: "This emote has been unlisted for the following reasons: {FLAG_LIST}",
-			notice: "It can be added to your channel, but we cannot verify if it is safe to show on a livestream.",
-			notice_flagged: "It can be added to your channel, however we believe it is unsafe to show on a livestream.",
+			warning_flagged: "Dieses Emote ist aus folgenden Gründen nicht mehr öffentlich gelistet: {FLAG_LIST}",
+			notice: "Es kann zu deinem Kanal hinzugefügt werden, jedoch können wir nicht gewährleisten, dass es für einen Livestream geeignet ist.",
+			notice_flagged:
+				"Es kann zu deinem Kanal hinzugefügt werden, jedoch sind wir der Meinung, dass es nicht für einen Livestream geeignet ist.",
 			show_button: "Emote anzeigen",
 			flag_sexual_content: "Sexuelle oder anzügliche Inhalte",
-			flag_epilepsy: "Rapid flashing / seizure-inducing",
+			flag_epilepsy: "Rapides Flackern / Epilepsiewarnung",
 			flag_edgy: "Grenzwertig oder geschmacklos",
 			flag_twitch_banned: "Auf Twitch nicht zugelassen",
 		},
@@ -210,7 +211,7 @@ export default {
 			category: {
 				name: "Kategorie",
 				top: "Top",
-				trending: "Trending",
+				trending: "Im Trend",
 				featured: "Vorgestellt",
 				global: "Global",
 				new: "Neu",
@@ -219,9 +220,10 @@ export default {
 				hint: "Suchfilter",
 				zero_width: "Überlagernd / Zero-Width",
 				animated: "Animiert",
-				case_sensitive: "Case Sensitive",
+				case_sensitive: "Groß-/Kleinschreibung beachten",
 				exact_match: "Exakte Übereinstimmung",
 				ignore_tags: "Tags ignorieren",
+				personal_use_approved: "Für die persönliche Nutzung zugelassen",
 				sorting: "Sortieren",
 				sorting_ascending: "Aufsteigend",
 				sorting_descending: "Absteigend",
@@ -235,6 +237,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Emote nutzen...",
 			open_in_new_tab: "In neuem Tab öffnen",
+			copy_emote_link: "Emote-Link kopieren",
 		},
 		upload: {
 			emote_name: "Emote-Name",
@@ -254,7 +257,7 @@ export default {
 			as_child: "Du erstellst eine {IS_DIVERGED} Version von {0}. ",
 			content_moderation: "Inhalts-Moderation",
 			half_transparency_tooltip:
-				"Pixel können nur vollständig transparent oder deckend sein (keine variable Transparenz)",
+				"Pixel können nur vollständig transparent oder opak sein (keine variable Transparenz)",
 		},
 	},
 	emote_set: {
@@ -277,23 +280,24 @@ export default {
 		label_default: "Standard",
 		label_actor: "Aktiviert von {0}",
 		// "enabled by <display_name of actor>"
-		label_synced: "Originates from a different set",
+		label_synced: "Ursprünglich aus einer anderen Emote-Gruppe",
 		context_emote_add: "Zu {SET_NAME} hinzufügen",
 		context_emote_remove: "Aus {SET_NAME} entfernen",
 		origins: {
 			title: "Ursprünge",
-			hint: "Synchronize other emote sets to provide base emotes for {0}, useful for managing holiday variants.",
-			new: "Add Origin",
-			remove: "Remove Origin",
+			hint: "Synchronisiere andere Emote-Gruppen, um Basis Emotes für {0} bereitzustellen. Nützlich für das Verwalten von saisonalen Varianten.",
+			new: "Ursprung hinzufügen",
+			remove: "Ursprung entfernen",
 			priority: "Priorität",
 			priority_hint: "Dieser Wert bestimmt, welcher Ursprung bei Namenskonflikten Vorrang erhält",
 		},
 		personal: {
-			personal_use_guidelines: "Personal Use Guidelines",
+			personal_use_guidelines: "Richtlinien für die persönliche Nutzung",
 			emote_not_validated:
-				"{EMOTE} will need to be checked by a moderator for compliance with the @:emote_set.personal.personal_use_guidelines{'.'}",
-			pending_review: "Pending Personal Use Review",
-			not_allowed: "Not Allowed For Personal Use",
+				"Es ist notwendig, dass {EMOTE} von einem Moderator auf die Konformität mit den @:emote_set.personal.personal_use_guidelines überprüft wird{'.'}",
+			pending_review: "Überprüfung für die persönliche Nutzung ausstehend",
+			not_allowed: "Für die persönliche Nutzung nicht zugelassen",
+			allowed: "Für die persönliche Nutzung zugelassen",
 		},
 		modal: {
 			selected_channel_count: "kein Kanal ausgewählt | {0} Kanal ausgewählt | {0} Kanäle ausgewählt",
@@ -325,7 +329,7 @@ export default {
 		joined_at: "Am {0} beigetreten",
 		editors: "Editoren",
 		roles: "Rollen",
-		connections: "Kanäle | Kanäle & Accounts",
+		connections: "Kanäle | Kanäle & Konten",
 		new_connections: "Konten verknüpfen...",
 		edit_connection: "Verbindung bearbeiten",
 		add_editor: "Editor hinzufügen",
@@ -345,13 +349,15 @@ export default {
 			display_name: "Anzeigename",
 			profile_picture: "Profilbild",
 			section_badges: "Abzeichen",
-			section_paints: "Paints",
+			section_paints: "Farben",
 			no_badges: "Du besitzt keine Abzeichen",
-			no_paints: "You do not own any paints",
+			no_paints: "Du besitzt keine Farben",
 			sign_out: "Abmelden",
 			cosmetics_updated: "Erscheinungsbild aktualisiert",
 			cosmetics_updated_message:
-				"Es kann zwischen 10 und 30 Minuten dauern, bis deine Änderungen im Chat erscheinen.",
+				"Deine Änderungen werden sofort im Chat sichtbar, wenn du die offizielle 7TV-Erweiterung verwendest.",
+			cosmetics_updated_third_party:
+				"Wenn du einen Drittanbieter-Client wie ein Add-on in einer anderen Erweiterung verwendest, kann es bis zu 24 Stunden dauern.",
 		},
 		editor_permissions: {
 			modify_emotes: "Channel-Emotes anpassen",
@@ -377,7 +383,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Kreditkarte",
 		payment_popup_cta: "Transaktion im neuen Fenster abschließen",
-		pay_button: "Mit {0} bezahlen",
+		checkout_button: "Zur Kasse",
 		product_type_subscription: "Abonnement",
 		redeem_heading: "Geschenkcode einlösen",
 		redeem_hint: "Du hast einen speziellen Geschenkcode oder Gutschein? Gib ihn hier ein, um ihn einzulösen!",
@@ -389,17 +395,17 @@ export default {
 		},
 		sub: {
 			incentive: "Du erhältst...",
-			creator_tier: "Extras for creators",
-			creator_tier_desc: "Upgrade to the Creator tier and get extra coolness for your channel",
+			creator_tier: "Extras für Creator",
+			creator_tier_desc: "Werte auf die Creator-Stufe auf, für noch mehr Individualisierung auf deinem Kanal",
 			feature_t1_badge: "Abonnenten-Abzeichen",
-			feature_t1_paints: "Nametag Paints",
+			feature_t1_paints: "Farbige Namen",
 			feature_t1_animated_profile_picture: "Animiertes Profilbild",
-			feature_t1_zero_width: "Zero Width Emotes",
+			feature_t1_zero_width: "Überlagernde Emotes",
 			feature_t1_global_raffle: "Los für Globales-Emote Verlosung",
 			feature_t1_personal_emotes: "Persönliche Emotes",
 			feature_t2_animated_profile_banner: "Animiertes Profilbanner",
 			feature_t2_animated_offline_screen: "Animiertes Offlinebanner",
-			feature_t2_custom_chat_theme: "Custom Chat Theme",
+			feature_t2_custom_chat_theme: "Benutzerdefiniertes Chat-Thema",
 			feature_t2_extended_sub_emotes: "Erweiterte Sub-Emotes",
 			current_plan: "Dein Abonnement",
 			cancel: "Nicht erneuern",
@@ -407,22 +413,22 @@ export default {
 			reactivate: "Abonnement fortsetzen",
 			cancel_prompt: "Bist du sicher, dass du dein Abonnement kündigen möchtest?",
 			state_heading: "Dein Abonnement",
-			state_badge_heading: "Subscriber Badges",
+			state_badge_heading: "Abonnenten-Abzeichen",
 			state_badge_progress: "Abzeichen-Fortschritt",
-			state_badge_progress_filled: "You'll receive your {0} badge shortly",
-			state_badge_edit_button: "Manage Badges",
-			state_paints: "Paints",
+			state_badge_progress_filled: "Du wirst dein {0} Abzeichen in Kürze erhalten",
+			state_badge_edit_button: "Abzeichen verwalten",
+			state_paints: "Farben",
 			state_anniversary:
 				"Dein Abo Jahrestag ist heute | Dein nächster Jahrestag ist in einem Tag | Dein nächster Abo Jahrestag ist in {0} Tagen",
-			state_age: "Du hast heute abonniert | Du hast seit einem Tag abonniert | Du hast seit {0} Tagen abonniert",
-			state_gift: "You were gifted a sub by {USER}",
+			state_age: "Du hast heute abonniert | Du bist seit einem Tag abonniert | Du bist seit {0} Tagen abonniert",
+			state_gift: "{USER} hat dir ein Abo geschenkt",
 			state_ending: "Dein Abo endet heute | Dein Abo endet in einem Tag | Dein Abo endet in {0} Tagen",
 			state_collection_heading: "Sammlung",
 			state_paints_heading:
-				"You don't have any paints yet | You've unlocked {0} paint so far | You've unlocked {0} paints so far",
-			state_paints_current: "Paints Available Now",
-			state_paints_hint: "New Paints are released on a monthly basis!",
-			state_paints_edit_button: "Manage Paints",
+				"Du hast bis jetzt noch keine Farben | Du hast bisher {0} Farbe freigeschaltet | Du hast bisher {0} Farben freigeschaltet",
+			state_paints_current: "Jetzt verfügbare Farben",
+			state_paints_hint: "Neue Farben werden auf einer monatlichen Basis veröffentlicht!",
+			state_paints_edit_button: "Farben verwalten",
 			state_raffle: "Globales-Emote Verlosung",
 			state_leaderboards: "Top Geschenkgeber",
 			raffle: {
@@ -488,9 +494,9 @@ jedoch bleibt es verfügbar für Nutzer mit direktem Link.
 				content: `
 ## {OWNER_DISPLAY_NAME} möchte, dass du der Besitzer von '{EMOTE_NAME}' wirst
 
-[Emote Anzeigen]({EMOTE_URL})
+[Emote anzeigen]({EMOTE_URL})
 
-**[Anfrage Akzeptieren]({EMOTE_CLAIM_URL})** | [Anfrage Ablehnen]({EMOTE_DECLINE_URL})
+**[Anfrage akzeptieren]({EMOTE_CLAIM_URL})** | [Anfrage ablehnen]({EMOTE_DECLINE_URL})
 				`,
 			},
 			client_banned: {
@@ -509,7 +515,7 @@ Dein Zugriff zu @:common.appName ist nun eingeschränkt.<br/><br/>
 {EFFECT_NO_OWNERSHIP}
 {EFFECT_MEMORY_HOLE}
 
-<br/>Diese Entscheidung entfällt **{BAN_EXPIRE_AT}**.
+<br/>Diese Entscheidung läuft am **{BAN_EXPIRE_AT}** ab.
 _Falls du der Meinung bist, dass dies ist ein Fehler ist, kontaktiere bitte @:common.supportEmail{'.'}_
 `,
 				effect: {

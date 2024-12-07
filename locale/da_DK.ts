@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "Hundredvis af emote slots",
-				detail: "Start med {0} slots, med et muligt maksimum på {1} og ingen paywall.",
+				detail: "Everyone gets 600 customizable channel emote slots, all for free.",
 			},
 			channel_emote_names: {
 				name: "Per-kanal emote navne",
@@ -94,12 +94,12 @@ export default {
 		sign_in: "Log på",
 		user_search: "Søg profiler",
 		theme: "Switch to {0} theme",
-		theme_dark: "Dark",
-		theme_light: "Light",
+		theme_dark: "Mørk",
+		theme_light: "Lys",
 		theme_seasonal: "Seasonal",
-		inbox: "Inbox",
-		locale_selector: "Language",
-		locale_contribute: "Translate @:common.appName{'!'}",
+		inbox: "Indbakke",
+		locale_selector: "Sprog",
+		locale_contribute: "Oversæt @:common.appName{'!'}",
 		wip_notice: {
 			heading: "Velkommen til den nye @:common.appName hjemmeside",
 			text1: "Dette er en tidlig forhåndsvisning af næste måde at opleve @:common.appName{'.'} på",
@@ -145,7 +145,7 @@ export default {
 		emote_set_emote_added: "Tilføjede emote {AE} til {T}",
 		emote_set_emote_removed: "Fjernede emote {AE} fra {T}",
 		emote_set_emote_renamed: "Omdøbte emote {AE} fra {O} til {N} i {T}",
-		emote_set_capacity_updated: "Updated the capacity of {T} from {O} to {N}",
+		emote_set_capacity_updated: "Opdateret kapaciteten af {T} fra {O} til {N}",
 		emote_set_renamed: "Renamed the set {T} from {O} to {N}",
 		emote_set_updated: "Ændrede egenskaber for {T}",
 	},
@@ -176,8 +176,8 @@ export default {
 		tags: "Tags",
 		add_tag: "Tilføj tag",
 		trending_rank: "#{0} på populære",
-		card_label_added: "Added to {0}",
-		card_label_added_foreign: "Added to {0}, originating from another set",
+		card_label_added: "Tilføjet til {0}",
+		card_label_added_foreign: "Tilføjet til {0}, stammer fra et andet sæt",
 		avif_no_support:
 			"Beklager, {BROWSER} understøtter ikke AVIF-formatet. Prøv at opdatere til en nyere version eller prøv med en anden browser.",
 		delete_prompt: {
@@ -222,6 +222,7 @@ export default {
 				case_sensitive: "Case Sensitive",
 				exact_match: "Exact Match",
 				ignore_tags: "Ignore Tags",
+				personal_use_approved: "Personal Use Approved",
 				sorting: "Sorting",
 				sorting_ascending: "Ascending",
 				sorting_descending: "Descending",
@@ -235,6 +236,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Use Emote...",
 			open_in_new_tab: "Open in new tab",
+			copy_emote_link: "Copy Emote Link",
 		},
 		upload: {
 			emote_name: "Emote navn",
@@ -294,6 +296,7 @@ export default {
 				"{EMOTE} will need to be checked by a moderator for compliance with the @:emote_set.personal.personal_use_guidelines{'.'}",
 			pending_review: "Pending Personal Use Review",
 			not_allowed: "Not Allowed For Personal Use",
+			allowed: "Approved For Personal Use",
 		},
 		modal: {
 			selected_channel_count: "ingen kanal valgt - {0} kanal valgt - {0} kanaler valgt",
@@ -351,7 +354,10 @@ export default {
 			no_paints: "Du ejer ikke nogen malinger",
 			sign_out: "Log ud",
 			cosmetics_updated: "Cosmetics Updated",
-			cosmetics_updated_message: "It may take between 10 to 30 minutes for your changes to appear in chat.",
+			cosmetics_updated_message:
+				"Your changes will update instantly in chat if you're using the official 7TV Extension.",
+			cosmetics_updated_third_party:
+				"If you're using a third-party client such as an add-on in another extension, it may take up to 24 hours.",
 		},
 		editor_permissions: {
 			modify_emotes: "Modify Channel Emotes",
@@ -377,7 +383,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Kreditkort",
 		payment_popup_cta: "Gennemfør transaktionen i det nye vindue",
-		pay_button: "Betal med {0}",
+		checkout_button: "Checkout",
 		product_type_subscription: "Abonnement",
 		redeem_heading: "Redeem Gift Code",
 		redeem_hint: "Have a special gift code or voucher? Enter it here to redeem it!",

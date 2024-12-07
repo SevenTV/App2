@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "Több száz hangulatjel hely",
-				detail: "Kezdésnek már {0} hely, amit {1} -ra is bővíthetsz bármilyen fizetés nélkül.",
+				detail: "Mindenki 600 testreszabható hangulatjel helyet kap. Teljesen ingyen!",
 			},
 			channel_emote_names: {
 				name: "Csatornánkénti nevek",
@@ -222,6 +222,7 @@ export default {
 				case_sensitive: "Kis-nagybetű érzékeny",
 				exact_match: "Pontos egyezés",
 				ignore_tags: "Címkék figyelmen kívül hagyása",
+				personal_use_approved: "Személyes használatra jóváhagyott",
 				sorting: "Rendezés",
 				sorting_ascending: "Növekvő",
 				sorting_descending: "Csökkenő",
@@ -235,6 +236,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Hozzáadás...",
 			open_in_new_tab: "Megnyitás új lapon",
+			copy_emote_link: "Hangulatjel link másolása",
 		},
 		upload: {
 			emote_name: "Hangulatjel neve",
@@ -294,6 +296,7 @@ export default {
 				"{EMOTE}-ot egy moderátornak ellenőriznie kell, hogy megfelel-e a @:emote_set.personal.personal_use_guidelines {'.'} feltételnek",
 			pending_review: "Személyes használatra vonatkozó felülvizsgálat függőben",
 			not_allowed: "Személyes használatra nem engedélyezett",
+			allowed: "Személyes használatra jóváhagyva",
 		},
 		modal: {
 			selected_channel_count:
@@ -328,9 +331,9 @@ export default {
 		roles: "Rangok",
 		connections: "Csatornák | Csatornák és fiókok",
 		new_connections: "Fiókok összekapcsolása...",
-		edit_connection: "Edit Connection",
+		edit_connection: "Összekapcsolás szerkesztése",
 		add_editor: "Szerkesztő hozzáadása",
-		open_external_profile: "Open profile (external)",
+		open_external_profile: "Profil megnyitása (külső)",
 		editor_modal_heading: "Módosítsd {0} szerkesztőit",
 		editor_modal_user_search: "Kit szeretnél hozzáadni szerkesztőnek?",
 		editor_modal_user_update: "Szerkesztő",
@@ -351,7 +354,9 @@ export default {
 			no_paints: "Nincsenek festékeid",
 			sign_out: "Kijelentkezés",
 			cosmetics_updated: "Kozmetikumok frissültek",
-			cosmetics_updated_message: "Akár 30 perc is eltelhet mire a módosításaid életbe lépnek.",
+			cosmetics_updated_message: "A változtatásaid azonnal megtörténnek a chaten, ha a 7TV bővítményt használod.",
+			cosmetics_updated_third_party:
+				"Ha egy harmadik féltől származó klienst vagy bővítményt használ, akkor akár 24 óráig is eltarthat.",
 		},
 		editor_permissions: {
 			modify_emotes: "Csatorna hangulatjeleinek szerkesztése",
@@ -377,7 +382,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Bankkártya",
 		payment_popup_cta: "Fejezd be a tranzakciót a másik ablakban",
-		pay_button: "Fizess {0} -val/vel",
+		checkout_button: "Pénztár",
 		product_type_subscription: "Előfizetés",
 		redeem_heading: "Ajándékkód beváltása",
 		redeem_hint: "Van egy ajándékkódod vagy utalványod? Írd ide a beváltáshoz!",

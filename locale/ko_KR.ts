@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "수백 개의 이모티콘 슬롯",
-				detail: "유로 서비스가 없는 {0} 슬롯으로 시작해서 최대 {1} 슬롯까지 가능합니다.",
+				detail: "Everyone gets 600 customizable channel emote slots, all for free.",
 			},
 			channel_emote_names: {
 				name: "채널당 이모티콘 이름",
@@ -222,6 +222,7 @@ export default {
 				case_sensitive: "대소문자 구분됨",
 				exact_match: "정확하게 일치",
 				ignore_tags: "태그 무시",
+				personal_use_approved: "Personal Use Approved",
 				sorting: "Sorting",
 				sorting_ascending: "Ascending",
 				sorting_descending: "Descending",
@@ -235,6 +236,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Use Emote...",
 			open_in_new_tab: "Open in new tab",
+			copy_emote_link: "Copy Emote Link",
 		},
 		upload: {
 			emote_name: "이모티콘 이름",
@@ -293,6 +295,7 @@ export default {
 				"{EMOTE} will need to be checked by a moderator for compliance with the @:emote_set.personal.personal_use_guidelines{'.'}",
 			pending_review: "Pending Personal Use Review",
 			not_allowed: "Not Allowed For Personal Use",
+			allowed: "Approved For Personal Use",
 		},
 		modal: {
 			selected_channel_count:
@@ -351,7 +354,10 @@ export default {
 			no_paints: "소유한 채색이 없습니다.",
 			sign_out: "로그아웃",
 			cosmetics_updated: "Cosmetics Updated",
-			cosmetics_updated_message: "It may take between 10 to 30 minutes for your changes to appear in chat.",
+			cosmetics_updated_message:
+				"Your changes will update instantly in chat if you're using the official 7TV Extension.",
+			cosmetics_updated_third_party:
+				"If you're using a third-party client such as an add-on in another extension, it may take up to 24 hours.",
 		},
 		editor_permissions: {
 			modify_emotes: "채널 이모티콘 수정",
@@ -377,7 +383,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "신용카드",
 		payment_popup_cta: "새 창에서 거래를 완료하세요",
-		pay_button: "{0} 을(를) 통해 지불",
+		checkout_button: "Checkout",
 		product_type_subscription: "구독",
 		redeem_heading: "Redeem Gift Code",
 		redeem_hint: "Have a special gift code or voucher? Enter it here to redeem it!",

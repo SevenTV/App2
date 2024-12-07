@@ -74,7 +74,7 @@ export default {
 		},
 		socials: {
 			discord: "Rejoignez @:common.appName sur Discord",
-			discord_online_count: "{0} utilisateur en ligne en ce moment",
+			discord_online_count: "{0} utilisateurs en ligne en ce moment",
 			twitter: "Suivez-nous sur Twitter",
 			github: "Contribuer",
 		},
@@ -237,6 +237,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Utiliser l'emote...",
 			open_in_new_tab: "Ouvrir dans un nouvel onglet",
+			copy_emote_link: "Copier le lien de l'emote",
 		},
 		upload: {
 			emote_name: "Nom de l'emote",
@@ -265,7 +266,7 @@ export default {
 		explain: {
 			section: "Que sont les collections d'emotes?",
 			hint: "Les collections d'emotes sont un ensemble d'emotes qui peuvent être utilisé sur votre chaîne ou partagées avec d'autres utilisateurs.",
-			hint_select: "Quelle collection d'emotes souhaitais vous utilisez par défaut ?",
+			hint_select: "Quelle collection d'emotes souhaitez-vous utiliser par défaut ?",
 			hint_select_emote: "Où voulez-vous ajouter {EMOTE} ?",
 		},
 		no_space: "Slots pleins",
@@ -356,9 +357,9 @@ export default {
 			sign_out: "Se déconnecter",
 			cosmetics_updated: "Cosmétiques mis à jour",
 			cosmetics_updated_message:
-				"Vos changements peuvent prendre jusqu'à une heure avant d'apparaître dans le chat.",
-			cosmetics_updated_message_beta:
-				"Voulez-vous voir vos changements immédiatement ? Téléchargez la version bêta de @:common.appName{'!'}",
+				"Vos modifications seront mises à jour instantanément dans le chat si vous utilisez l'extension officielle de 7TV.",
+			cosmetics_updated_third_party:
+				"Si vous utilisez un client tiers comme un module dans une autre extension, cela peut prendre jusqu'à 24 heures.",
 		},
 		editor_permissions: {
 			modify_emotes: "Modifier les emotes de la chaîne",
@@ -384,7 +385,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Carte de crédit",
 		payment_popup_cta: "Complétez la transaction dans la nouvelle fenêtre",
-		pay_button: "Payer avec {0}",
+		checkout_button: "Payer",
 		product_type_subscription: "Abonnement",
 		redeem_heading: "Utiliser un code cadeau",
 		redeem_hint: "Vous possédez un code cadeau ou un bon de réduction? Saisissez-le ici pour l'utiliser!",

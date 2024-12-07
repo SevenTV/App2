@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "Tillgång till hundratals av emotes",
-				detail: "Börja med {0} emotes, med ett möjligt maximum av {1} helt gratis.",
+				detail: "Everyone gets 600 customizable channel emote slots, all for free.",
 			},
 			channel_emote_names: {
 				name: "Kanalbundet emote-alias",
@@ -223,6 +223,7 @@ export default {
 				case_sensitive: "Skiftlägeskänslig",
 				exact_match: "Exakt matchning",
 				ignore_tags: "Ignorera taggar",
+				personal_use_approved: "Personal Use Approved",
 				sorting: "Sortering",
 				sorting_ascending: "Stigande",
 				sorting_descending: "Fallande",
@@ -236,6 +237,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Använd emote...",
 			open_in_new_tab: "Öppna i ny flik",
+			copy_emote_link: "Copy Emote Link",
 		},
 		upload: {
 			emote_name: "Emotenamn",
@@ -295,6 +297,7 @@ export default {
 				"{EMOTE} will need to be checked by a moderator for compliance with the @:emote_set.personal.personal_use_guidelines{'.'}",
 			pending_review: "Pending Personal Use Review",
 			not_allowed: "Not Allowed For Personal Use",
+			allowed: "Approved For Personal Use",
 		},
 		modal: {
 			selected_channel_count: "ingen kanal vald | {0} kanal valda | {0} kanaler valda",
@@ -352,7 +355,10 @@ export default {
 			no_paints: "Du äger inga färger",
 			sign_out: "Logga ut",
 			cosmetics_updated: "Kosmetika uppdaterad",
-			cosmetics_updated_message: "Det kan ta mellan 10 till 30 minuter innan dina ändringar visas i chatten.",
+			cosmetics_updated_message:
+				"Your changes will update instantly in chat if you're using the official 7TV Extension.",
+			cosmetics_updated_third_party:
+				"If you're using a third-party client such as an add-on in another extension, it may take up to 24 hours.",
 		},
 		editor_permissions: {
 			modify_emotes: "Ändra kanal-emotes",
@@ -378,7 +384,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Kreditkort",
 		payment_popup_cta: "Slutför transaktionen i det nya fönstret",
-		pay_button: "Betala via {0}",
+		checkout_button: "Checkout",
 		product_type_subscription: "Prenumeration",
 		redeem_heading: "Lös in presentkod",
 		redeem_hint: "Har du en presentkod eller kupong? Lös in dem här!",

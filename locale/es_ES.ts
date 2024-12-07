@@ -12,7 +12,7 @@ export default {
 		download: "Descargar | Descargas",
 		features: "Características",
 		experimental: "Experimental",
-		experimental_hint: "This feature is experimental and is not guaranteed to be stable",
+		experimental_hint: "Esta característica es experimental y no se garantiza que sea estable",
 		comments: "Comentarios",
 		search: "Buscar",
 		update: "Actualizar",
@@ -45,7 +45,7 @@ export default {
 			},
 			many_emote_slots: {
 				name: "Cientos de espacios para emotes",
-				detail: "Empieza con {0} espacios, con un máximo posible de {1} y sin pagar.",
+				detail: "Everyone gets 600 customizable channel emote slots, all for free.",
 			},
 			channel_emote_names: {
 				name: "Nombres de emotes por canal",
@@ -125,8 +125,8 @@ export default {
 		emote_version_deleted: "Versión '{VER}' eliminada para {T}",
 		emote_flag_added: "Añadió la propiedad {FLAG} a {T}",
 		emote_flag_removed: "Removió la propiedad {FLAG} de {T}",
-		emote_personal_use_validated: "Validated personal use for {T}",
-		emote_personal_use_rejected: "Rejected personal use for {T}",
+		emote_personal_use_validated: "Uso personal validado para {T}",
+		emote_personal_use_rejected: "Uso personal rechazado para {T}",
 		user_created: "Creó {T}",
 		user_deleted: "Eliminó {T}",
 		user_editor_added: "Añadió a {U} como editor",
@@ -145,8 +145,8 @@ export default {
 		emote_set_emote_added: "Añadió el emote {AE} a {T}",
 		emote_set_emote_removed: "Removió el emote {AE} de {T}",
 		emote_set_emote_renamed: "Renombró el emote {AE} de {O} a {N} en {T}",
-		emote_set_capacity_updated: "Updated the capacity of {T} from {O} to {N}",
-		emote_set_renamed: "Renamed the set {T} from {O} to {N}",
+		emote_set_capacity_updated: "Capacidad actualizada de {T} desde {O} a {N}",
+		emote_set_renamed: "Renombró el conjunto {T} de {O} a {N}",
 		emote_set_updated: "Cambió las propiedades de {T}",
 	},
 	// Text that is relevant to emotes
@@ -176,7 +176,7 @@ export default {
 		tags: "Etiquetas",
 		add_tag: "Agregar Etiqueta",
 		trending_rank: "#{0} en Tendencias",
-		card_label_added: "Added to {0}",
+		card_label_added: "Agregado a {0}",
 		card_label_added_foreign: "Added to {0}, originating from another set",
 		avif_no_support:
 			"Lo sentimos, {BROWSER} no soporta el formato AVIF. Intente actualizar a una versión más reciente o intente con un navegador diferente.",
@@ -222,6 +222,7 @@ export default {
 				case_sensitive: "Sensible a Mayúsculas",
 				exact_match: "Coincidencia Exacta",
 				ignore_tags: "Ignorar Etiquetas",
+				personal_use_approved: "Personal Use Approved",
 				sorting: "Ordenar por",
 				sorting_ascending: "Ascendente",
 				sorting_descending: "Descendente",
@@ -235,6 +236,7 @@ export default {
 		context: {
 			use_emote_ellipsis: "Utilizar Emote...",
 			open_in_new_tab: "Abrir en una nueva pestaña",
+			copy_emote_link: "Copy Emote Link",
 		},
 		upload: {
 			emote_name: "Nombre del Emote",
@@ -277,7 +279,7 @@ export default {
 		label_default: "Predeterminado",
 		label_actor: "Habilitado por {0}",
 		// "enabled by <display_name of actor>"
-		label_synced: "Originates from a different set",
+		label_synced: "Originario de un conjunto diferente",
 		context_emote_add: "Añadir a {SET_NAME}",
 		context_emote_remove: "Eliminar de {SET_NAME}",
 		origins: {
@@ -294,6 +296,7 @@ export default {
 				"{EMOTE} will need to be checked by a moderator for compliance with the @:emote_set.personal.personal_use_guidelines{'.'}",
 			pending_review: "Pending Personal Use Review",
 			not_allowed: "Not Allowed For Personal Use",
+			allowed: "Approved For Personal Use",
 		},
 		modal: {
 			selected_channel_count: "ningún canal seleccionado | {0} canal seleccionado | {0} canales seleccionados",
@@ -350,7 +353,10 @@ export default {
 			no_paints: "No tienes ninguna pintura",
 			sign_out: "Cerrar Sesión",
 			cosmetics_updated: "Cosméticos Actualizados",
-			cosmetics_updated_message: "Los cambios podrían tardar entre 10 y 30 minutos en aparecer en el chat.",
+			cosmetics_updated_message:
+				"Your changes will update instantly in chat if you're using the official 7TV Extension.",
+			cosmetics_updated_third_party:
+				"If you're using a third-party client such as an add-on in another extension, it may take up to 24 hours.",
 		},
 		editor_permissions: {
 			modify_emotes: "Modificar Emotes del Canal",
@@ -376,7 +382,7 @@ export default {
 		payment_method_paypal: "PayPal",
 		payment_method_stripe: "Tarjeta de Crédito",
 		payment_popup_cta: "Completa la transacción en la nueva ventana",
-		pay_button: "Paga a través de {0}",
+		checkout_button: "Checkout",
 		product_type_subscription: "Suscripción",
 		redeem_heading: "Canjear Código de Regalo",
 		redeem_hint: "¿Posees un código de regalo o un cupón? ¡Escríbelo aquí para canjearlo!",
@@ -414,7 +420,7 @@ export default {
 			state_anniversary:
 				"Tu Sub-aniversario es hoy | Tu próximo aniversario es en {0} día | Tu siguiente Sub-aniversario es en {0} días",
 			state_age: "Te has suscrito hoy | Has estado suscrito por {0} día | Has estado suscrito por {0} días",
-			state_gift: "You were gifted a sub by {USER}",
+			state_gift: "{USER} te ha regalado una suscripción",
 			state_ending: "Tu sub termina hoy | Tu sub termina en {0} día | Tu sub termina en {0} días",
 			state_collection_heading: "Colección",
 			state_paints_heading:
