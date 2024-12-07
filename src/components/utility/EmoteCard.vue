@@ -14,7 +14,9 @@
 		>
 			<div
 				class="img-wrapper"
-				:censor="!emote.state.includes('LISTED') && !actor.hasPermission(Permissions.EditAnyEmote)"
+				:censor="
+					!forceUncensor && !emote.state.includes('LISTED') && !actor.hasPermission(Permissions.EditAnyEmote)
+				"
 			>
 				<img v-if="src" :loading="lazy ? 'lazy' : undefined" :src="src" />
 			</div>
@@ -46,7 +48,19 @@
 
 				<TransitionGroup name="fade">
 					<div v-for="ind of indicators" :key="ind.icon" class="state-indicator">
-						<div v-tooltip="ind.tooltip" v-tooltip:position="'right-end'">
+						<div
+							v-if="ind.tooltip === 'Unlisted'"
+							v-tooltip="ind.tooltip"
+							v-tooltip:position="'right-end'"
+							:style="{ cursor: 'pointer' }"
+							class="state-indicator unlisted-indicator"
+							@click="forceUncensor = !forceUncensor"
+						>
+							<div class="icon" :style="{ color: ind.color }">
+								<Icon :icon="ind.icon" />
+							</div>
+						</div>
+						<div v-else v-tooltip="ind.tooltip" v-tooltip:position="'right-end'">
 							<div class="icon" :style="{ color: ind.color }">
 								<Icon :icon="ind.icon" />
 							</div>
@@ -110,6 +124,7 @@ const { namedSets } = storeToRefs(useStore());
 const actor = useActor();
 
 const isUnavailable = ref(false);
+const forceUncensor = ref(false);
 
 const modal = useModal();
 const m = useMutationStore();
