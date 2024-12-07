@@ -275,9 +275,9 @@ const addShadow = () => {
 	const prev = data.shadows[data.shadows.length - 1];
 	data.shadows.push({
 		color: prev?.color ?? 255,
-		radius: prev?.radius ?? "1",
-		x_offset: prev?.x_offset ?? "0",
-		y_offset: prev?.y_offset ?? "0",
+		radius: prev?.radius.toString() ?? "1",
+		x_offset: prev?.x_offset.toString() ?? "0",
+		y_offset: prev?.y_offset.toString() ?? "0",
 	});
 };
 const editShadow = (ind: number, color: string) => {
@@ -349,9 +349,9 @@ const doUpdate = () => {
 		stops: toRaw(data.stops).map((s) => ({ at: s.at, color: s.color })),
 		shadows: toRaw(data.shadows).map((s) => ({
 			color: s.color,
-			radius: s.radius,
-			x_offset: s.x_offset,
-			y_offset: s.y_offset,
+			radius: s.radius.toString(),
+			x_offset: s.x_offset.toString(),
+			y_offset: s.y_offset.toString(),
 		})),
 	};
 
