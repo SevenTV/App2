@@ -69,7 +69,19 @@ const filteredPaints = computed(() =>
 	}),
 );
 
-onResult((res) => (paints.value = res.data.cosmetics.paints ?? []));
+onResult(
+	(res) =>
+		(paints.value =
+			res.data.cosmetics.paints.map((p) => {
+				p.shadows = p.shadows.map((s) => {
+					s.x_offset = s.x_offset.toString();
+					s.y_offset = s.y_offset.toString();
+					s.radius = s.radius.toString();
+					return s;
+				});
+				return p;
+			}) ?? []),
+);
 
 const view = ref<"overview" | "builder">("overview");
 const currentPaint = ref(null as Paint | null);

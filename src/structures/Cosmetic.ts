@@ -20,9 +20,9 @@ export namespace Paint {
 	}
 
 	export interface Shadow {
-		x_offset: number;
-		y_offset: number;
-		radius: number;
+		x_offset: string;
+		y_offset: string;
+		radius: string;
 		color: number;
 	}
 }
